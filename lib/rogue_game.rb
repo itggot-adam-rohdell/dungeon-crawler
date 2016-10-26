@@ -5,7 +5,16 @@ class Rogue_game
     self.caption = "roguelike"
   end
 
+  def setup
+    @em = EntityManager.new(entities)
+    @player = Player.new(x,y, em)
+  end
+
   def update
+
+    if @player.attack
+      em.attack(@player)
+    end
 
   end
 
