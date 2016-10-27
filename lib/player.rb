@@ -1,7 +1,8 @@
 class Player
 
   attr_accessor :attack
-  def initialize(x,y, em)
+
+  def initialize(x,y,em)
     @player = Gosu::Image.new("media/player.png")
     @hp = 100
     @inventory = []
@@ -16,15 +17,27 @@ class Player
 
   end
 
+  def button_down(id)
+    if id == Gosu::KbLeft
+      @x -= 16
+
+    elsif id == Gosu::KbRight
+      @x += 16
+
+    elsif id == Gosu::KbDown
+      @y += 16
+    elsif id == Gosu::KbUp
+      @y -= 16
+    end
+  end
+
+
   def pick_up
 
   end
 
-  def move
-  end
-
   def action
-    @attack = true
+    !@attack
   end
 
   def get_attacked
@@ -35,7 +48,7 @@ class Player
   end
 
   def draw
-    @player.draw(@x,@y, 0)
+    @player.draw(@x,@y, 1)
   end
 
 end
