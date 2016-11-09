@@ -16,21 +16,23 @@ class Rogue_game < Gosu::Window
   end
 
   def setup
+    @items = []
     @tiles = []
     map_reader
-    @em = EntityManager.new(@entities)
-    @player = Player.new(16,16,@em)
-    @cm = Collision_manager.new(@player,@tiles,0,0)
-
     @boxes.each_with_index do |row, y|
       row.each_with_index do |box, x|
       if box[0].to_s == 'w'
-        @tiles.push(Tile.new(x*16,y*16,'w'))
+        @tiles << Tile.new(x*16,y*16,'w')
       elsif box[0].to_s == 't'
-        @tiles.push(Tile.new(x*16,y*16,'t'))
+        @tiles << Tile.new(x*16,y*16,'t')
+      elsif box[0].to_s == 'p'
+        @items << Item.new(x*16,y*16,'p')
       end
      end
-   end
+    end
+    @em = EntityManager.new(@entities)
+    @player = Player.new(16,16,@em)
+    @cm = Collision_manager.new(@player,@tiles,0,@items)
   end
 
   def button_down(id)
@@ -47,8 +49,6 @@ class Rogue_game < Gosu::Window
     if @player.attack
       @em.attack(@player)
     end
-
-    @player.update
   end
 
   def draw
@@ -56,6 +56,9 @@ class Rogue_game < Gosu::Window
 
     @tiles.each do |tile|
       tile.draw
+    end
+    @items.each do |item|
+      item.draw
     end
   end
 end

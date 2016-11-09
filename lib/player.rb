@@ -32,8 +32,11 @@ class Player
   end
 
 
-  def pick_up
-
+  def pick_up(item)
+    if item == 'p'
+      @inventory << 'potion'
+      puts @inventory
+    end
   end
 
   def action
