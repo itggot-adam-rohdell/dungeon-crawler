@@ -21,6 +21,7 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="PROVIDED" name="byebug (v9.0.6, ruby-2.3.1-p112) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="gosu (v0.10.8, ruby-2.3.1-p112) [gem]" level="application" />
   </component>
 </module>
