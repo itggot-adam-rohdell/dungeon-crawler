@@ -5,7 +5,7 @@ class Rogue_game < Gosu::Window
     self.caption = "roguelike"
     setup
     @entities = []
-    @tiles = []
+
   end
 
   def map_reader
@@ -16,16 +16,18 @@ class Rogue_game < Gosu::Window
   end
 
   def setup
+    @tiles = []
     map_reader
     @em = EntityManager.new(@entities)
-    @player = Player.new(100,50,@em)
+    @player = Player.new(16,16,@em)
+    @cm = Collision_manager.new(@player,@tiles,0,0)
 
     @boxes.each_with_index do |row, y|
       row.each_with_index do |box, x|
       if box[0].to_s == 'w'
-        @tiles << Tile.new(x,y,'w')
+        @tiles.push(Tile.new(x*16,y*16,'w'))
       elsif box[0].to_s == 't'
-        @tiles << Tile.new(x,y,'t')
+        @tiles.push(Tile.new(x*16,y*16,'t'))
       end
      end
    end
@@ -36,7 +38,7 @@ class Rogue_game < Gosu::Window
       exit
     end
 
-    @player.button_down(id)
+    @cm.button_down(id)
 
   end
 
@@ -50,13 +52,6 @@ class Rogue_game < Gosu::Window
   end
 
   def draw
-    @boxes.each_with_index do |row, y|
-      row.each_with_index do |box, x|
-        if box != ""
-          @boxes[box.to_sym].draw(x*16, y*16, 0)
-        end
-      end
-    end
     @player.draw
 
     @tiles.each do |tile|

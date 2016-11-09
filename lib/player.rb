@@ -1,6 +1,8 @@
 class Player
 
   attr_accessor :attack
+  attr_reader :x
+  attr_reader :y
 
   def initialize(x,y,em)
     @player = Gosu::Image.new("media/player.png")
@@ -17,17 +19,15 @@ class Player
 
   end
 
-  def button_down(id)
-    if id == Gosu::KbLeft
-      @x -= 16
-
-    elsif id == Gosu::KbRight
+  def move(id)
+    if id == 'l'
+      @x -=16
+    elsif id == 'u'
+      @y -=16
+    elsif id == 'r'
       @x += 16
-
-    elsif id == Gosu::KbDown
+    else
       @y += 16
-    elsif id == Gosu::KbUp
-      @y -= 16
     end
   end
 
