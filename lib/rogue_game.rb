@@ -15,20 +15,33 @@ class Rogue_game < Gosu::Window
     end
   end
 
+  def content_reader
+    @contents = []
+    File.readlines('items/contents1.csv').each do |content|
+      @contents << content.split(';')
+    end
+  end
+
   def setup
     @items = []
     @tiles = []
     map_reader
+    content_reader
     @boxes.each_with_index do |row, y|
       row.each_with_index do |box, x|
       if box[0].to_s == 'w'
         @tiles << Tile.new(x*16,y*16,'w')
       elsif box[0].to_s == 't'
         @tiles << Tile.new(x*16,y*16,'t')
-      elsif box[0].to_s == 'p'
-        @items << Item.new(x*16,y*16,'p')
       end
      end
+    end
+    @contents.each_with_index do |row,y|
+      row.each_with_index do |box,x|
+        if box[0].to_s == 'p'
+        @items << Item.new(x*16,y*16,'p')
+        end
+      end
     end
     @em = EntityManager.new(@entities)
     @player = Player.new(16,16,@em)
@@ -45,7 +58,7 @@ class Rogue_game < Gosu::Window
   end
 
   def update
-
+    @cm.pick_up
     if @player.attack
       @em.attack(@player)
     end

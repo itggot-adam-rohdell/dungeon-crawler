@@ -44,7 +44,9 @@ class Collision_manager
   def pick_up
     @items.each do |item|
       if item.x == @player.x && item.y == @player.y
+        puts item.value
         @player.pick_up(item.value)
+        @items.delete(item)
       end
     end
   end
