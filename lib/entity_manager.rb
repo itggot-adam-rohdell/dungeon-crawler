@@ -5,6 +5,6 @@ class EntityManager
   end
 
   def attack(attacker)
-
   end
+
 end

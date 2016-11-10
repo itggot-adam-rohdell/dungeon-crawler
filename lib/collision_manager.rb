@@ -6,6 +6,7 @@ class Collision_manager
     @items = items
     @walls = []
     @tiles = []
+    @enemies = enemies
     tiles.each do |tile|
       if tile.value == 'w'
         @walls << tile
@@ -51,5 +52,16 @@ class Collision_manager
     end
   end
 
+  def attack(attack)
+    @enemies.each do |enemy|
+      if enemy.x == attack.x && enemy.y == attack.y
+        if enemy.get_attacked(attack.damage)
+          enemy = nil
+        else
+          false
+        end
+      end
+    end
+  end
 
 end
