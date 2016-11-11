@@ -14,17 +14,13 @@ class Enemy
   def move
   end
 
-  def get_attacked damage
+  def get_attacked(damage)
     if damage >= @hp
       true
     end
   end
 
   def drop
-  end
-
-  def update
-
   end
 
   def draw

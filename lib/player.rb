@@ -17,23 +17,31 @@ class Player
     @em = em
   end
 
-  def update
-
-  end
-
   def move(id)
     if id == 'l'
-      @x -=16
-      @direction = @directions[0]
+      if @direction == @directions[0]
+        @x -=16
+      else
+        @direction = @directions[0]
+      end
     elsif id == 'u'
-      @y -=16
-      @direction = @directions[1]
+      if @direction == @directions[1]
+        @y -=16
+      else
+        @direction = @directions[1]
+      end
     elsif id == 'r'
-      @x += 16
-      @direction = @directions[2]
+      if @direction == @directions[2]
+        @x += 16
+      else
+        @direction = @directions[2]
+      end
     else
-      @y += 16
-      @direction = @directions[3]
+      if @direction == @directions[3]
+        @y += 16
+      else
+        @direction = @directions[3]
+      end
     end
   end
 
