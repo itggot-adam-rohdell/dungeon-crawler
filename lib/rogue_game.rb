@@ -85,7 +85,7 @@ class Rogue_game < Gosu::Window
   def draw
     @player.draw
     @enemylist.each do |enemy|
-      unless enemy == nil
+      if enemy != nil
         enemy.draw
       end
     end
