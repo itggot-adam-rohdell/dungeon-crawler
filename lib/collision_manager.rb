@@ -30,6 +30,17 @@ class Collision_manager
         unwalkable << 'up'
       end
     end
+      @enemies.each do |enemy|
+        if enemy.x == @player.x-16 && enemy.y == @player.y
+          unwalkable << 'left'
+      elsif enemy.x == @player.x+16 && enemy.y == @player.y
+          unwalkable << 'right'
+      elsif enemy.x == @player.x && enemy.y == @player.y+16
+          unwalkable << 'down'
+      elsif enemy.x == @player.x && enemy.y == @player.y-16
+          unwalkable << 'up'
+        end
+    end
 
     if id == Gosu::KbLeft && unwalkable.include?('left') == false
        @player.move('l')
