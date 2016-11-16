@@ -55,10 +55,8 @@ class Collision_manager
   def attack(attack)
     @enemies.each do |enemy|
       if enemy.x == attack.x && enemy.y == attack.y
-        if enemy.get_attacked(attack.damage)
-          enemy = nil
-        else
-          false
+         if enemy.get_attacked(attack.damage)
+            return enemy
         end
       end
     end

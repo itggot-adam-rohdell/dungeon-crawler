@@ -68,10 +68,9 @@ class Rogue_game < Gosu::Window
     if id == Gosu::KbEscape
       exit
     elsif id == Gosu::KbSpace
-      @attack = @player.attack
-      if @cm.attack(@attack)
-        @enemy = nil
-      end
+
+        @attack = @player.attack
+        @enemylist.delete(@cm.attack(@attack))
     end
 
     @cm.button_down(id)

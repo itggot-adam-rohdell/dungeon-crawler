@@ -13,7 +13,7 @@ class Player
     @x = x
     @y = y
     @directions = [:l, :u, :r, :d]
-    @direction = 1
+    @direction = :r
     @em = em
   end
 
@@ -55,13 +55,13 @@ class Player
 
   def attack
     if @direction == :l
-      Attack.new(@x - 16, @y, @damage)
+      return Attack.new(@x - 16, @y, @damage)
     elsif @direction == :r
-      Attack.new(@x + 16, @y, @damage)
+      return Attack.new(@x + 16, @y, @damage)
     elsif @direction == :u
-      Attack.new(@x, @y - 16, @damage)
+      return Attack.new(@x, @y - 16, @damage)
     elsif @direction == :d
-      Attack.new(@x, @y + 16, @damage)
+      return Attack.new(@x, @y + 16, @damage)
     end
   end
 

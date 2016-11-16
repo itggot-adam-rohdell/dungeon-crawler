@@ -1,5 +1,6 @@
 class Enemy
   attr_accessor :x, :y
+
   def initialize(x,y, hp, dmg)
     @enemy = Gosu::Image.new("media/enemy.png")
     @hp = hp
@@ -17,6 +18,8 @@ class Enemy
   def get_attacked(damage)
     if damage >= @hp
       true
+    else
+      false
     end
   end
 
