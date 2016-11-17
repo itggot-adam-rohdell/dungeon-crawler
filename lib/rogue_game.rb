@@ -9,9 +9,9 @@ class Rogue_game < Gosu::Window
   end
 
   def map_reader
-    @boxes = []
+    @tiles = []
     File.readlines('maps/level1.csv').each do |box|
-      @boxes << box.split(';')
+      @tiles << box.split(';')
     end
   end
 
@@ -31,20 +31,26 @@ class Rogue_game < Gosu::Window
 
   def setup
     @items = []
-    @tiles = []
     @enemylist = []
     map_reader
     content_reader
     enemy_reader
-    @boxes.each_with_index do |row, y|
-      row.each_with_index do |box, x|
-      if box[0].to_s == 'w'
-        @tiles << Tile.new(x*16,y*16,'w')
-      elsif box[0].to_s == 't'
-        @tiles << Tile.new(x*16,y*16,'t')
+
+    y = 0
+    while y < @tiles.size
+      x = 0
+      while x < @tiles[y].size
+        if @tiles[y][x][0].to_s == 'w'
+          @tiles[y][x] = Tile.new(x*16, y*16, 'w')
+        elsif @tiles[y][x][0].to_s == 't'
+          @tiles[y][x] = Tile.new(x*16, y*16, 't')
+        end
+        x += 1
       end
-     end
+      y += 1
     end
+
+
     @contents.each_with_index do |row,y|
       row.each_with_index do |box,x|
         if box[0].to_s == 'p'
@@ -93,8 +99,10 @@ class Rogue_game < Gosu::Window
       @attack.draw
       @attack = nil
     end
-    @tiles.each do |tile|
+    @tiles.each do |row|
+      row.each do |tile|
       tile.draw
+      end
     end
     @items.each do |item|
       item.draw

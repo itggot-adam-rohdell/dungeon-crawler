@@ -4,32 +4,55 @@ class Collision_manager
   def initialize(player,tiles,enemies,items)
     @player = player
     @items = items
-    @walls = []
-    @tiles = []
+    @tiles = tiles
     @enemies = enemies
-    tiles.each do |tile|
-      if tile.value == 'w'
-        @walls << tile
-      elsif tile.value == 't'
-        @tiles << tile
-      end
-    end
 
   end
 
   def button_down(id)
-    unwalkable = []
-    @walls.each do |wall|
-      if wall.x == @player.x-16 && wall.y == @player.y
-        unwalkable << 'left'
-      elsif wall.x == @player.x+16 && wall.y == @player.y
-        unwalkable << 'right'
-      elsif wall.x == @player.x && wall.y == @player.y+16
-        unwalkable << 'down'
-      elsif wall.x == @player.x && wall.y == @player.y-16
-        unwalkable << 'up'
+
+    if id == Gosu::KbLeft
+      if @player.direction == :l
+        unless @tiles[@player.y / 16][(@player.x - 16) / 16].value == "w"
+          @player.move('l')
+        end
+      else @player.direction = :l
+      end
+    elsif id == Gosu::KbRight
+      if @player.direction == :r
+        unless @tiles[@player.y / 16][(@player.x + 16) / 16].value == "w"
+          @player.move('r')
+        end
+      else @player.direction = :r
+      end
+    elsif id == Gosu::KbDown
+      if @player.direction == :d
+        unless @tiles[(@player.y + 16) / 16][(@player.x) / 16].value == "w"
+          @player.move('d')
+        end
+      else @player.direction = :d
+      end
+    elsif id == Gosu::KbUp
+      if @player.direction == :u
+        unless @tiles[(@player.y - 16)/ 16][(@player.x) / 16].value == "w"
+          @player.move('u')
+        end
+      else @player.direction = :u
       end
     end
+=begin
+      if tile.value == "w"
+        if tile.x == @player.x-16 && tile.y == @player.y
+          unwalkable << 'left'
+        elsif tile.x == @player.x+16 && tile.y == @player.y
+          unwalkable << 'right'
+        elsif tile.x == @player.x && tile.y == @player.y+16
+          unwalkable << 'down'
+        elsif tile.x == @player.x && tile.y == @player.y-16
+          unwalkable << 'up'
+        end
+      end
+=end
       @enemies.each do |enemy|
         if enemy.x == @player.x-16 && enemy.y == @player.y
           unwalkable << 'left'
@@ -40,8 +63,12 @@ class Collision_manager
       elsif enemy.x == @player.x && enemy.y == @player.y-16
           unwalkable << 'up'
         end
-    end
+      end
+  end
 
+
+
+=begin
     if id == Gosu::KbLeft && unwalkable.include?('left') == false
        @player.move('l')
     elsif id == Gosu::KbRight && unwalkable.include?('right') == false
@@ -51,7 +78,7 @@ class Collision_manager
     elsif id == Gosu::KbUp && unwalkable.include?('up') == false
       @player.move('u')
     end
-  end
+=end
 
   def pick_up
     @items.each do |item|

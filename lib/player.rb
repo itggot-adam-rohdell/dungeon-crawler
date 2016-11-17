@@ -3,7 +3,7 @@ class Player
   attr_reader :damage
   attr_reader :x
   attr_reader :y
-  attr_reader :direction
+  attr_accessor :direction
 
   def initialize(x,y,em)
     @player = Gosu::Image.new("media/player.png")
@@ -19,31 +19,15 @@ class Player
 
   def move(id)
     if id == 'l'
-      if @direction == @directions[0]
         @x -=16
-      else
-        @direction = @directions[0]
-      end
     elsif id == 'u'
-      if @direction == @directions[1]
         @y -=16
-      else
-        @direction = @directions[1]
-      end
     elsif id == 'r'
-      if @direction == @directions[2]
         @x += 16
-      else
-        @direction = @directions[2]
-      end
     else
-      if @direction == @directions[3]
         @y += 16
-      else
-        @direction = @directions[3]
       end
     end
-  end
 
 
   def pick_up(item)
