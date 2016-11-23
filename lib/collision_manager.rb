@@ -12,13 +12,20 @@ class Collision_manager
   def button_down(id)
 
     if id == Gosu::KbLeft
-      if @player.direction == :l
-        unless @tiles[@player.y / 16][(@player.x - 16) / 16].value == "w"
-          @player.move('l')
-        end
-      else @player.direction = :l
-      end
+       if walkable(@tiles, Wall , :l)
+       else walkable(@enemies, Enemy , :l)
+       end
     elsif id == Gosu::KbRight
+      if walkable(@tiles, Wall , :r)
+      else walkable(@enemies, Enemy , :r)
+      end
+    elsif id == Gosu::KbUp
+      if walkable(@tiles, Wall , :u)
+      else walkable(@enemies, Enemy , :u)
+      end
+    end
+  end
+=begin    elsif id == Gosu::KbRight
       if @player.direction == :r
         unless @tiles[@player.y / 16][(@player.x + 16) / 16].value == "w"
           @player.move('r')
@@ -38,8 +45,32 @@ class Collision_manager
           @player.move('u')
         end
       else @player.direction = :u
+=end
+
+
+    def walkable(array, value, direction)
+      if @player.direction == direction
+        if direction == :l
+          unless array[@player.y / 16][(@player.x - 16) / 16].class == value
+            @player.move(direction.to_s)
+          end
+        elsif direction == :r
+          unless array[@player.y / 16][(@player.x + 16) / 16].class == value
+            @player.move(direction.to_s)
+          end
+        elsif direction == :d
+          unless array[(@player.y + 16) / 16][@player.x / 16].class == value
+            @player.move(direction.to_s)
+          end
+        elsif direction == :u
+          unless array[(@player.y - 16) / 16][@player.x / 16].class == value
+            @player.move(direction.to_s)
+          end
+        end
+      else @player.direction = direction
+        end
       end
-    end
+
 =begin
       if tile.value == "w"
         if tile.x == @player.x-16 && tile.y == @player.y
@@ -53,6 +84,7 @@ class Collision_manager
         end
       end
 =end
+=begin
       @enemies.each do |enemy|
         if enemy.x == @player.x-16 && enemy.y == @player.y
           unwalkable << 'left'
@@ -64,9 +96,7 @@ class Collision_manager
           unwalkable << 'up'
         end
       end
-  end
-
-
+=end
 
 =begin
     if id == Gosu::KbLeft && unwalkable.include?('left') == false
@@ -99,5 +129,4 @@ class Collision_manager
       end
     end
   end
-
 end

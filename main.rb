@@ -8,5 +8,14 @@ require_relative 'lib/collision_manager'
 require_relative 'lib/item'
 require_relative 'lib/attack'
 
+class String
+
+  def value
+    self
+  end
+
+end
+
+
 ng = Rogue_game.new
 ng.show

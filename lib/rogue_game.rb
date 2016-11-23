@@ -50,6 +50,16 @@ class Rogue_game < Gosu::Window
       y += 1
     end
 
+    while y < @enemies.size
+      x = 0
+      while x < @enemies[y].size
+        if @enemies[y][x][0].to_s == 'e'
+          @enemies[y][x] = Enemy.new(x*16, y*16, 10, 10, 'e')
+        end
+        x += 1
+      end
+      y += 1
+    end
 
     @contents.each_with_index do |row,y|
       row.each_with_index do |box,x|
@@ -58,16 +68,10 @@ class Rogue_game < Gosu::Window
         end
       end
     end
-    @enemies.each_with_index do |row,y|
-      row.each_with_index do |box,x|
-        if box[0].to_s == 'e'
-          @enemylist << Enemy.new(x*16,y*16,10,0)
-        end
-      end
-    end
+
     @em = EntityManager.new(@entities)
     @player = Player.new(16,16,@em)
-    @cm = Collision_manager.new(@player,@tiles,@enemylist,@items)
+    @cm = Collision_manager.new(@player,@tiles,@enemies,@items)
   end
 
   def button_down(id)
