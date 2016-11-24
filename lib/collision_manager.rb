@@ -1,4 +1,4 @@
-
+require 'byebug'
 class Collision_manager
 
   def initialize(player,tiles,enemies,items)
@@ -12,16 +12,20 @@ class Collision_manager
   def button_down(id)
 
     if id == Gosu::KbLeft
-       if walkable(@tiles, Wall , :l)
-       else walkable(@enemies, Enemy , :l)
+       if if_walkable_move(@tiles, :l)
+       else if_walkable_move(@enemies, :l)
        end
     elsif id == Gosu::KbRight
-      if walkable(@tiles, Wall , :r)
-      else walkable(@enemies, Enemy , :r)
+      if if_walkable_move(@tiles, :r)
+      else if_walkable_move(@enemies, :r)
       end
     elsif id == Gosu::KbUp
-      if walkable(@tiles, Wall , :u)
-      else walkable(@enemies, Enemy , :u)
+      if if_walkable_move(@tiles, :u)
+      else if_walkable_move(@enemies, :u)
+      end
+    elsif id == Gosu::KbDown
+      if if_walkable_move(@tiles, :d)
+      else if_walkable_move(@enemies, :d)
       end
     end
   end
@@ -48,28 +52,37 @@ class Collision_manager
 =end
 
 
-    def walkable(array, value, direction)
+    def if_walkable_move(array, direction)
+
       if @player.direction == direction
         if direction == :l
-          unless array[@player.y / 16][(@player.x - 16) / 16].class == value
+          unless array[@player.y / 16][(@player.x - 16) / 16] == nil
+            if array[@player.y / 16][(@player.x - 16) / 16].walkable
             @player.move(direction.to_s)
+            end
           end
         elsif direction == :r
-          unless array[@player.y / 16][(@player.x + 16) / 16].class == value
-            @player.move(direction.to_s)
+          unless array[@player.y / 16][(@player.x + 16) / 16] == nil
+            if array[@player.y / 16][(@player.x + 16) / 16].walkable
+              @player.move(direction.to_s)
+            end
           end
         elsif direction == :d
-          unless array[(@player.y + 16) / 16][@player.x / 16].class == value
-            @player.move(direction.to_s)
+          unless array[(@player.y + 16) / 16][@player.x / 16] == nil
+            if array[(@player.y + 16) / 16][@player.x / 16].walkable
+              @player.move(direction.to_s)
+            end
           end
         elsif direction == :u
-          unless array[(@player.y - 16) / 16][@player.x / 16].class == value
-            @player.move(direction.to_s)
+          if array[(@player.y - 16) / 16][@player.x / 16] == nil
+           @player.move(direction.to_s)
+          elsif array[(@player.y - 16) / 16][@player.x / 16].walkable
+             @player.move(direction.to_s)
           end
         end
-      else @player.direction = direction
-        end
+        else @player.direction = direction
       end
+     end
 
 =begin
       if tile.value == "w"

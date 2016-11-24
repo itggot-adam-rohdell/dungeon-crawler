@@ -1,6 +1,6 @@
 class Enemy
   attr_accessor :x, :y
-  attr_reader :value
+  attr_reader :value, :walkable
 
   def initialize(x,y, hp, dmg, value)
     @enemy = Gosu::Image.new("media/enemy.png")
@@ -9,6 +9,7 @@ class Enemy
     @x = x
     @y = y
     @value = value
+    @walkable = false
   end
 
   def attack

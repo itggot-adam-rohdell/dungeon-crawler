@@ -1,4 +1,7 @@
+require 'byebug'
 class Rogue_game < Gosu::Window
+
+
 
   def initialize
     super 640, 480
@@ -41,24 +44,26 @@ class Rogue_game < Gosu::Window
       x = 0
       while x < @tiles[y].size
         if @tiles[y][x][0].to_s == 'w'
-          @tiles[y][x] = Tile.new(x*16, y*16, 'w')
+          @tiles[y][x] = Tile.create(x*16, y*16, 'w')
         elsif @tiles[y][x][0].to_s == 't'
-          @tiles[y][x] = Tile.new(x*16, y*16, 't')
+          @tiles[y][x] = Tile.create(x*16, y*16, 't')
         end
         x += 1
       end
       y += 1
     end
-
-    while y < @enemies.size
+    p = 0
+    while p < @enemies.size
       x = 0
-      while x < @enemies[y].size
-        if @enemies[y][x][0].to_s == 'e'
-          @enemies[y][x] = Enemy.new(x*16, y*16, 10, 10, 'e')
+      while x < @enemies[p].size
+        if @enemies[p][x][0].to_s == 'e'
+          @enemies[p][x] = Enemy.new(x*16, p*16, 10, 10, 'e')
+        else
+          @enemies[p][x] = nil
         end
         x += 1
       end
-      y += 1
+      p += 1
     end
 
     @contents.each_with_index do |row,y|
@@ -93,9 +98,11 @@ class Rogue_game < Gosu::Window
 
   def draw
     @player.draw
-    @enemylist.each do |enemy|
-      if enemy != nil
-        enemy.draw
+    @enemies.each do |row|
+      row.each do |enemy|
+        if enemy != nil
+          enemy.draw
+        end
       end
     end
 
@@ -103,11 +110,13 @@ class Rogue_game < Gosu::Window
       @attack.draw
       @attack = nil
     end
+
     @tiles.each do |row|
       row.each do |tile|
       tile.draw
       end
     end
+
     @items.each do |item|
       item.draw
     end
