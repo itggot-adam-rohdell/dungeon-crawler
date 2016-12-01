@@ -1,11 +1,9 @@
 class Player
 
-  attr_reader :damage
-  attr_reader :x
-  attr_reader :y
-  attr_accessor :direction
+  attr_reader :x, :y, :damage
+  attr_accessor :direction, :current_tile
 
-  def initialize(x,y,em)
+  def initialize(x,y, current_tile)
     @player = Gosu::Image.new("media/player.png")
     @hp = 100
     @inventory = []
@@ -14,7 +12,9 @@ class Player
     @y = y
     @directions = [:l, :u, :r, :d]
     @direction = :r
-    @em = em
+    @current_tile = current_tile
+    @current_tile.walkable = false
+
   end
 
   def move(id)

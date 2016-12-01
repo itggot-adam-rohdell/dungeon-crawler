@@ -1,7 +1,7 @@
 class Tile
 
-  attr_reader :walkable, :x, :y
-  attr_accessor :enemy
+  attr_reader  :x, :y
+  attr_accessor :enemy, :walkable
 
 
   def self.create(x, y, value)
@@ -16,7 +16,7 @@ class Tile
   def initialize(x,y)
     @x = x
     @y = y
-    @walkable = false
+    @walkable = true
   end
 
   def draw
@@ -34,17 +34,18 @@ class Wall < Tile
 
     def initialize(x, y)
       @image = Gosu::Image.new('media/wall.png')
-      @walkable = false
-      super x, y
-    end
 
+      super x, y
+      @walkable = false
+    end
 
 end
 
 class Floor < Tile
   def initialize(x, y)
     @image = Gosu::Image.new('media/tile.png')
-    @walkable = true
+
     super x, y
+    @walkable = true
     end
 end

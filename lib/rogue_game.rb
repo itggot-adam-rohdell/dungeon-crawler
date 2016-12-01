@@ -57,7 +57,7 @@ class Rogue_game < Gosu::Window
       x = 0
       while x < @enemies[p].size
         if @enemies[p][x][0].to_s == 'e'
-          @enemies[p][x] = Enemy.new(x*16, p*16, 10, 10, 'e')
+          @enemies[p][x] = Enemy.new(x*16, p*16, 10, 10, 'e', @tiles[p][x])
         else
           @enemies[p][x] = nil
         end
@@ -75,7 +75,7 @@ class Rogue_game < Gosu::Window
     end
 
     @em = EntityManager.new(@entities)
-    @player = Player.new(16,16,@em)
+    @player = Player.new(16,16,@tiles[1][1])
     @cm = Collision_manager.new(@player,@tiles,@enemies,@items)
   end
 
