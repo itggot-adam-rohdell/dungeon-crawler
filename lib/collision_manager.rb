@@ -18,7 +18,11 @@ class Collision_manager
     elsif id == Gosu::KbUp
       if_walkable_move(@tiles, :u)
     elsif id == Gosu::KbDown
-      if_walkable_move(@tiles, :d)
+      if if_walkable_move(@tiles, :d)
+        @enemies.each do |enemy|
+          enemy.move
+        end
+      end
     end
   end
 
@@ -30,27 +34,33 @@ class Collision_manager
               @player.current_tile.walkable = true
               @player.current_tile = array[@player.y / 16][(@player.x - 16) / 16]
               @player.move(direction.to_s)
+
             end
         elsif direction == :r
             if array[@player.y / 16][(@player.x + 16) / 16].walkable
               @player.current_tile.walkable = true
               @player.current_tile = array[@player.y / 16][(@player.x + 16) / 16]
               @player.move(direction.to_s)
+
             end
         elsif direction == :d
             if array[(@player.y + 16) / 16][@player.x / 16].walkable
               @player.current_tile.walkable = true
               @player.current_tile = array[(@player.y + 16) / 16][@player.x / 16]
               @player.move(direction.to_s)
+
             end
         elsif direction == :u
             if array[(@player.y - 16) / 16][@player.x / 16].walkable
               @player.current_tile.walkable = true
               @player.current_tile = array[(@player.y - 16) / 16][@player.x / 16]
                @player.move(direction.to_s)
+
             end
         end
+        return true
       else @player.direction = direction
+        return false
     end
   end
 
@@ -65,12 +75,13 @@ class Collision_manager
   end
 
   def attack(attack)
-    @enemies.each do |enemy|
+    @enemies.each_with_index do |enemy, index|
       if enemy.x == attack.x && enemy.y == attack.y
          if enemy.get_attacked(attack.damage)
-            return enemy
+            @enemies.delete_at(index)
+            enemy.current_tile.walkable = true
+           end
         end
-      end
     end
   end
-    end
+end

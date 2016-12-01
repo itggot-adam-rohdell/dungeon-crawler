@@ -27,8 +27,8 @@ class Rogue_game < Gosu::Window
 
   def enemy_reader
     @enemies = []
-    File.readlines('items/enemies.csv').each do |enemy|
-      @enemies << enemy.split(';')
+    File.readlines('items/enemies.txt').each do |enemy|
+      @enemies << enemy.split(' ')
     end
   end
 
@@ -52,18 +52,9 @@ class Rogue_game < Gosu::Window
       end
       y += 1
     end
-    p = 0
-    while p < @enemies.size
-      x = 0
-      while x < @enemies[p].size
-        if @enemies[p][x][0].to_s == 'e'
-          @enemies[p][x] = Enemy.new(x*16, p*16, 10, 10, 'e', @tiles[p][x])
-        else
-          @enemies[p][x] = nil
-        end
-        x += 1
-      end
-      p += 1
+
+    @enemies.each_with_index do |enemy, index|
+      @enemies[index] = Enemy.new(enemy[1],enemy[2],enemy[0],@tiles[enemy[2].to_i/16][enemy[1].to_i/16])
     end
 
     @contents.each_with_index do |row,y|
@@ -74,7 +65,6 @@ class Rogue_game < Gosu::Window
       end
     end
 
-    @em = EntityManager.new(@entities)
     @player = Player.new(16,16,@tiles[1][1])
     @cm = Collision_manager.new(@player,@tiles,@enemies,@items)
   end
@@ -98,13 +88,11 @@ class Rogue_game < Gosu::Window
 
   def draw
     @player.draw
-    @enemies.each do |row|
-      row.each do |enemy|
+    @enemies.each do |enemy|
         if enemy != nil
           enemy.draw
         end
       end
-    end
 
     if @attack != nil
       @attack.draw
@@ -120,5 +108,5 @@ class Rogue_game < Gosu::Window
     @items.each do |item|
       item.draw
     end
+   end
   end
-end
