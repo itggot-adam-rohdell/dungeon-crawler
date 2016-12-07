@@ -1,9 +1,9 @@
 require "byebug"
 class Enemy
-  attr_accessor :x, :y, :current_tile
+  attr_accessor :current_tile, :desired_x, :desired_y
   attr_reader :value
 
-  def initialize(x,y, value, current_tile)
+  def initialize(value, current_tile)
     @enemy = Gosu::Image.new("media/enemy.png")
       if value == 'e'
         @hp = 10
@@ -12,23 +12,36 @@ class Enemy
         @hp = 100
         @attack = 20
       end
-    @x = x.to_i
-    @y = y.to_i
+
     @value = value
     @current_tile = current_tile
     @current_tile.walkable = false
 
   end
 
+  def x
+      @current_tile.x
+  end
+
+  def y
+      @current_tile.y
+  end
+
   def attack
   end
 
-  def move
+  def move(tile)
+     @current_tile = tile
+  end
+
+  def desired_move
+      @desired_x = x
+      @desired_y = y
     puts 'Gustav är söt'
     if rand(2) == 1
-     @x += (rand(2) == 0 ? -1 : 1)*16
+     return @desired_x = x + (rand(2) == 0 ? -1 : 1)*16
     else
-     @y += (rand(2) == 0 ? -1 : 1)*16
+     return @desired_y = y + (rand(2) == 0 ? -1 : 1)*16
     end
   end
 
@@ -46,6 +59,6 @@ class Enemy
   end
 
   def draw
-    @enemy.draw(@x, @y, 1)
+    @enemy.draw(x, y, 1)
   end
 end

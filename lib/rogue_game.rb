@@ -54,7 +54,7 @@ class Rogue_game < Gosu::Window
     end
 
     @enemies.each_with_index do |enemy, index|
-      @enemies[index] = Enemy.new(enemy[1],enemy[2],enemy[0],@tiles[enemy[2].to_i/16][enemy[1].to_i/16])
+      @enemies[index] = Enemy.new(enemy[0],@tiles[enemy[2].to_i/16][enemy[1].to_i/16])
     end
 
     @contents.each_with_index do |row,y|

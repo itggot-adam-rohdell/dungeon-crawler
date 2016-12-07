@@ -12,55 +12,68 @@ class Collision_manager
   def button_down(id)
 
     if id == Gosu::KbLeft
-       if_walkable_move(@tiles, :l)
+       if if_walkable_move(@player, @tiles, :l)
+           if_walkable_move(@enemies[0], @tiles, :e)
+       end
     elsif id == Gosu::KbRight
-      if_walkable_move(@tiles, :r)
+       if if_walkable_move(@player, @tiles, :r)
+           if_walkable_move(@enemies[0], @tiles, :e)
+       end
     elsif id == Gosu::KbUp
-      if_walkable_move(@tiles, :u)
+       if if_walkable_move(@player, @tiles, :u)
+           if_walkable_move(@enemies[0], @tiles, :e)
+       end
     elsif id == Gosu::KbDown
-      if if_walkable_move(@tiles, :d)
-        @enemies.each do |enemy|
-          enemy.move
-        end
-      end
+       if if_walkable_move(@player, @tiles, :d)
+           if_walkable_move(@enemies[0], @tiles, :e)
+       end 
     end
   end
 
-    def if_walkable_move(array, direction)
+    def if_walkable_move(character, array, direction)
+        if character.class == Player
+          if @player.direction == direction
+            if direction == :l
+                if array[@player.y / 16][(@player.x - 16) / 16].walkable
+                  @player.current_tile.walkable = true
+                  @player.current_tile = array[@player.y / 16][(@player.x - 16) / 16]
+                  @player.move(direction.to_s)
 
-      if @player.direction == direction
-        if direction == :l
-            if array[@player.y / 16][(@player.x - 16) / 16].walkable
-              @player.current_tile.walkable = true
-              @player.current_tile = array[@player.y / 16][(@player.x - 16) / 16]
-              @player.move(direction.to_s)
+                end
+            elsif direction == :r
+                if array[@player.y / 16][(@player.x + 16) / 16].walkable
+                  @player.current_tile.walkable = true
+                  @player.current_tile = array[@player.y / 16][(@player.x + 16) / 16]
+                  @player.move(direction.to_s)
 
+                end
+            elsif direction == :d
+                if array[(@player.y + 16) / 16][@player.x / 16].walkable
+                  @player.current_tile.walkable = true
+                  @player.current_tile = array[(@player.y + 16) / 16][@player.x / 16]
+                  @player.move(direction.to_s)
+
+                end
+            elsif direction == :u
+                if array[(@player.y - 16) / 16][@player.x / 16].walkable
+                  @player.current_tile.walkable = true
+                  @player.current_tile = array[(@player.y - 16) / 16][@player.x / 16]
+                   @player.move(direction.to_s)
+
+                end
             end
-        elsif direction == :r
-            if array[@player.y / 16][(@player.x + 16) / 16].walkable
-              @player.current_tile.walkable = true
-              @player.current_tile = array[@player.y / 16][(@player.x + 16) / 16]
-              @player.move(direction.to_s)
-
-            end
-        elsif direction == :d
-            if array[(@player.y + 16) / 16][@player.x / 16].walkable
-              @player.current_tile.walkable = true
-              @player.current_tile = array[(@player.y + 16) / 16][@player.x / 16]
-              @player.move(direction.to_s)
-
-            end
-        elsif direction == :u
-            if array[(@player.y - 16) / 16][@player.x / 16].walkable
-              @player.current_tile.walkable = true
-              @player.current_tile = array[(@player.y - 16) / 16][@player.x / 16]
-               @player.move(direction.to_s)
-
+            return true
+          else @player.direction = direction
+            return false
+        end
+    elsif character.class == Enemy
+        @enemies.each do |enemy|
+            enemy.desired_move
+            if array[(enemy.desired_y / 16)][(enemy.desired_x / 16)].walkable
+                enemy.current_tile.walkable = true
+                enemy.move(array[(enemy.desired_y / 16)][(enemy.desired_x / 16)])
             end
         end
-        return true
-      else @player.direction = direction
-        return false
     end
   end
 
