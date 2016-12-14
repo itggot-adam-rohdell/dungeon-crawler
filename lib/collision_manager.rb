@@ -32,40 +32,17 @@ class Collision_manager
 
     def if_walkable_move(character, array, direction)
         if character.class == Player
-          if @player.direction == direction
-            if direction == :l
-                if array[@player.y / 16][(@player.x - 16) / 16].walkable
-                  @player.current_tile.walkable = true
-                  @player.current_tile = array[@player.y / 16][(@player.x - 16) / 16]
-                  @player.move(direction.to_s)
-
-                end
-            elsif direction == :r
-                if array[@player.y / 16][(@player.x + 16) / 16].walkable
-                  @player.current_tile.walkable = true
-                  @player.current_tile = array[@player.y / 16][(@player.x + 16) / 16]
-                  @player.move(direction.to_s)
-
-                end
-            elsif direction == :d
-                if array[(@player.y + 16) / 16][@player.x / 16].walkable
-                  @player.current_tile.walkable = true
-                  @player.current_tile = array[(@player.y + 16) / 16][@player.x / 16]
-                  @player.move(direction.to_s)
-
-                end
-            elsif direction == :u
-                if array[(@player.y - 16) / 16][@player.x / 16].walkable
-                  @player.current_tile.walkable = true
-                  @player.current_tile = array[(@player.y - 16) / 16][@player.x / 16]
-                   @player.move(direction.to_s)
-
-                end
+          if character.direction == direction
+            character.desired_move(direction)
+            if array[(character.desired_y / 16)][character.desired_x / 16].walkable
+              character.current_tile.walkable = true
+              character.move(array[(character.desired_y / 16)][(character.desired_x / 16)])
             end
+
             return true
           else @player.direction = direction
             return false
-        end
+          end
     elsif character.class == Enemy
         @enemies.each do |enemy|
             enemy.desired_move

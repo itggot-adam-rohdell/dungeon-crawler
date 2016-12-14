@@ -31,13 +31,13 @@ class Enemy
   end
 
   def move(tile)
-     @current_tile = tile
+      @current_tile = tile
+      @current_tile.walkable = false
   end
 
   def desired_move
       @desired_x = x
       @desired_y = y
-    puts 'Gustav är söt'
     if rand(2) == 1
      return @desired_x = x + (rand(2) == 0 ? -1 : 1)*16
     else
